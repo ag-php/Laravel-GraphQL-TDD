@@ -25,3 +25,11 @@ Publicar el archivo de configuración:
 Revisar la configuración:
 En el archivo ‘config/graphql.php’ recién creado está a configuración de GraphQL.
 
+
+
+## Creando casos de prueba (TEST CASE)
+Para los casos de prueba se utilizará el plugins de terceros “kunicmarko/graphql-test”:
+    ``` composer require kunicmarko/graphql-test ```
+
+Se crea el archivo de prueba dentro de la carpeta ‘tests/Feature’:
+    ``` php artisan make:test UserQueryTest ```
