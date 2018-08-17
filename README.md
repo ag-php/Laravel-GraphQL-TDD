@@ -164,7 +164,11 @@ Para ejecutar los casos de prueba abrir el terminal en la carpeta del proyecto y
 “Call to a member function make() on null”
 
 Ir al archivo ``` ‘vendor/laravel/framework/src/Illuminate/Fundation/Testing/Concerns/MakesHttpRequests.php’``` y cambiar la siguiente linea:
-```php $kernel = $this->app->make(HttpKernel::class); ```
+```php 
+    $kernel = $this->app->make(HttpKernel::class); 
+```
 por esta otra:
-```php $kernel = $this->createApplication()->make(HttpKernel::class);```
+```php 
+    $kernel = $this->createApplication()->make(HttpKernel::class);
+```
 
