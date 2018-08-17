@@ -9,8 +9,8 @@ Ejemplo de como usar la técnica de desarrollo guiado por pruebas en un API con 
     Laravel^5.6, php^7.1
     
 ## Instalando GraphQL
-Abre un terminal en la carpeta de tu proyecto y tecle:
-    ``` Composer require folklore/graphql ```
+Abre un terminal en la carpeta de tu proyecto y teclee:
+    ``` composer require folklore/graphql ```
     
 ## Configurando GraphQL
 Agregar el ‘service provider’ al archivo ‘config/app.php’:
@@ -36,9 +36,9 @@ Se crea el archivo de prueba dentro de la carpeta ‘tests/Feature’:
     
 
 ##### El archivo ‘UserQueryTest.php’ debe cumplir ciertas restricciones para poder usar el plugins de tercero:
-* Heredar de “KunicMarko\GraphQLTest\Bridge\Laravel\TestCase” y usarla;
+* Heredar de “KunicMarko\GraphQLTest\Bridge\Laravel\TestCase” y usarla.
 * Usar “KunicMarko\GraphQLTest\Operation\Query” o “KunicMarko\GraphQLTest\Operation\Mutation” según se necesite.
-* En clase “TestCase” que se heredó, hay un método abstracto (createApplication) el cual hay que implemeter.
+* En la clase “TestCase” que se heredó, hay un método abstracto (createApplication) el cual hay que implemetar.
 * Es necesario definir el tipo de cabecera que se utilizará.
 
 La ruta del endpoint por defecto es ‘/graphql’, pero si se desea cambiarla se debe adicionar esto a la clase deseada:
@@ -46,23 +46,115 @@ La ruta del endpoint por defecto es ‘/graphql’, pero si se desea cambiarla s
  
  
 ## Métodos de ejemplo (QUERY)
+```php
+    use Illuminate\Support\Str;
+    use KunicMarko\GraphQLTest\Bridge\Laravel\TestCase;
+    use KunicMarko\GraphQLTest\Operation\Query;
+```
 
 ```php
-    .
-    .
-    .
-    
     protected function setUp()
     {
         $this->setDefaultHeaders([
             'Content-Type' => 'application/json',
         ]);
     }
-    
-    .
-    .
-    .
-
 ```
 
+```php
+   public function testUserQuery(): void
+    {
+        $query = $this->query(
+            new Query(
+                'user',
+                [
+                    'id' => 1
+                ],
+                [
+                    'id',
+                    'name',
+                    'email',
+                    'password'
+                ]
+            )
+        );
+
+        $actual = json_encode($query);
+        $expectedUserNull = json_encode(["user" => null]);
+        $expectedErrors = json_encode("errors");
+
+        if(Str::contains($actual, $expectedUserNull))
+        {
+            $this->assertTrue(false, "El usuario no se ha mostrado, usuario null");
+        }
+        elseif (Str::contains($actual, $expectedErrors))
+        {
+            $this->assertTrue(false, "El usuario no se ha mostrado, existen errores en los datos");
+        }
+        else{
+            $this->assertTrue(true, "El usuario se ha mostrado correctamente");
+        }
+    } 
+    
+```
+
+## Métodos de ejemplo (MUTATIONS)
+```php
+    use Illuminate\Support\Str;
+    use KunicMarko\GraphQLTest\Bridge\Laravel\TestCase;
+    use KunicMarko\GraphQLTest\Operation\Mutation;
+    use Faker\Factory as Faker;
+```
+    
+```php
+    protected function setUp()
+    {
+        $this->setDefaultHeaders([
+            'Content-Type' => 'application/json',
+        ]);
+    }
+```
+
+```php
+    public function testCreateUserMutation():void
+    {
+        $faker = Faker::create();
+        $mutation = $this->mutation(
+            new Mutation(
+                'createUser',
+                [
+                    'name' => $faker->name(),
+                    'email' => $faker->unique()->email(),
+                    'password' => $faker->password()
+                ],
+                [
+                    'id',
+                    'name',
+                    'email',
+                    'password'
+                ]
+            )
+        );
+
+        $actual = json_encode($mutation);
+        $expectedUserNull = json_encode(["createUser" => null]);
+        $expectedErrors = json_encode("errors");
+
+        if(Str::contains($actual, $expectedUserNull))
+        {
+            $this->assertTrue(false, "El usuario no se ha creado, usuario null");
+        }
+        elseif (Str::contains($actual, $expectedErrors))
+        {
+            $this->assertTrue(false, "El usuario no se ha creado, existen errores en los datos");
+        }
+        else{
+            $this->assertTrue(true, "El usuario se ha creado correctamente");
+        }
+    }
+```
+
+
+Para ejecutar los casos de prueba abrir el terminal en la carpeta del proyecto y teclear la siguiente linea:
+``` vendor/bin/phpunits test/Feature/UsersQueryTest.php ```
  
