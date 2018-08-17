@@ -6,7 +6,7 @@ Ejemplo de como usar la técnica de desarrollo guiado por pruebas en un API con 
 # Casos de prueba para GraphQL en Laravel
 
 ## Requisitos
-    Laravel^5.6, php^7.1
+    Laravel^5.4, php^7.1
     
 ## Instalando GraphQL
 Abre un terminal en la carpeta de tu proyecto y teclee:
@@ -44,7 +44,7 @@ Se crea el archivo de prueba dentro de la carpeta ‘tests/Feature’:
 La ruta del endpoint por defecto es ‘/graphql’, pero si se desea cambiarla se debe adicionar esto a la clase deseada:
  ``` public static $endpoint = ‘/’; ```
  
- 
+
 ## Métodos de ejemplo (QUERY)
 ```php
     use Illuminate\Support\Str;
@@ -158,3 +158,13 @@ La ruta del endpoint por defecto es ‘/graphql’, pero si se desea cambiarla s
 Para ejecutar los casos de prueba abrir el terminal en la carpeta del proyecto y teclear la siguiente linea:
 ``` vendor/bin/phpunits test/Feature/UsersQueryTest.php ```
  
+ 
+## NOTA: 
+### Si al ejecutar un test se muestra el error:
+*“Call to a member function make() on null”
+
+Ir al archivo ‘vendor/laravel/framework/src/Illuminate/Fundation/Testing/Concerns/MakesHttpRequests.php’ y cambiar la siguiente linea:
+``` $kernel = $this->app->make(HttpKernel::class); ```
+por esta otra:
+``` $kernel = $this->createApplication()->make(HttpKernel::class);```
+
