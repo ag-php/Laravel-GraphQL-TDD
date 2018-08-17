@@ -161,10 +161,10 @@ Para ejecutar los casos de prueba abrir el terminal en la carpeta del proyecto y
  
 ## NOTA: 
 ### Si al ejecutar un test se muestra el error:
-*“Call to a member function make() on null”
+“Call to a member function make() on null”
 
-Ir al archivo ‘vendor/laravel/framework/src/Illuminate/Fundation/Testing/Concerns/MakesHttpRequests.php’ y cambiar la siguiente linea:
-``` $kernel = $this->app->make(HttpKernel::class); ```
+Ir al archivo ``` ‘vendor/laravel/framework/src/Illuminate/Fundation/Testing/Concerns/MakesHttpRequests.php’``` y cambiar la siguiente linea:
+```php $kernel = $this->app->make(HttpKernel::class); ```
 por esta otra:
-``` $kernel = $this->createApplication()->make(HttpKernel::class);```
+```php $kernel = $this->createApplication()->make(HttpKernel::class);```
 
