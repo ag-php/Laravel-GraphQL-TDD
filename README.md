@@ -33,3 +33,10 @@ Para los casos de prueba se utilizará el plugins de terceros “kunicmarko/grap
 
 Se crea el archivo de prueba dentro de la carpeta ‘tests/Feature’:
     ``` php artisan make:test UserQueryTest ```
+    
+
+### El archivo ‘UserQueryTest.php’ debe cumplir ciertas restricciones para poder usar el plugins de tercero:
+* Heredar de “KunicMarko\GraphQLTest\Bridge\Laravel\TestCase” y usarla;
+* Usar “KunicMarko\GraphQLTest\Operation\Query” o “KunicMarko\GraphQLTest\Operation\Mutation” según se necesite.
+* En clase “TestCase” que se heredó, hay un método abstracto (createApplication) el cual hay que implemeter.
+* Es necesario definir el tipo de cabecera que se utilizará.
