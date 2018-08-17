@@ -45,4 +45,24 @@ La ruta del endpoint por defecto es ‘/graphql’, pero si se desea cambiarla s
  ``` public static $endpoint = ‘/’; ```
  
  
+## Métodos de ejemplo (QUERY)
+
+```php
+    .
+    .
+    .
+    
+    protected function setUp()
+    {
+        $this->setDefaultHeaders([
+            'Content-Type' => 'application/json',
+        ]);
+    }
+    
+    .
+    .
+    .
+
+```
+
  
